@@ -19,12 +19,12 @@
 					<img src="img/avatars/avatar.jpg" alt="avatar" />
 				</div>
 			</div>
-			<div class="comment-add-block__right">
+			<form id="comment-form" class="comment-add-block__right" action="success.html">
 				<h6 class="comment-add-block__right-title">Егор Казаков</h6>
-				<div class="notify notify--error">Комментарий не может быть пустым</div>
-				<textarea class="textarea textarea--comment-add" name="add_comment" placeholder="Присоединиться к обсуждению..."></textarea>
-				<a class="button" href="#">Опубликовать</a>
-			</div>
+				<div class="notify notify--error error-hide">Комментарий не может быть пустым</div>
+				<textarea data-valid="required" class="textarea textarea--comment-add" name="add_comment" placeholder="Присоединиться к обсуждению..."></textarea>
+				<button type="submit" class="button" href="#">Опубликовать</button>
+			</form>
 		</div>
 		<p>
 			<a href="index.html">Вернуться на главную</a>
