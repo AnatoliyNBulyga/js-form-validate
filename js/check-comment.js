@@ -47,7 +47,7 @@ $(document).ready(function() {
 		var _sendForm = function() {
 			if (commentFormCheck._isValid == true) {
 				_form.unbind('submit').submit();
-			} 
+			}
 		} 
 
 
