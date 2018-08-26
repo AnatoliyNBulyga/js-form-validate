@@ -19,59 +19,71 @@ $(document).ready(function() {
 		}
 		var _formValid = function(event) {
 			event.preventDefault();
-			var inputs = _form.find('input'),
+			var inputs = _form.find('input');
 					valid = true;
 					
-
 			$.each(inputs, function(index, val) {
 				var input = $(val),
 				 		value = input.val().trim(),
+				 		type = input.attr('type').toLowerCase(),
 				 		name = input.attr('name');
 
 				// validate form		
 				if (value === '') {
 					// Show errors
+					_form.find('.notify--invalid-email').hide();
+					_form.find('.notify--invalid-password-email').hide();
 					_form.find('.notify--enter-' + name).fadeIn();
-				}
-					//Hide errors
-				input.on('change', function () {
-					_form.find('.notify--enter-' + name).fadeOut();
-				});
+					valid = false;
+				} else {
+					// if value !== '' => validate email
+					if (type === 'email') {
+						var pattern = /^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
 
-				// validate email
-				if (input.attr('type').toLowerCase() === 'email') {
-					var pattern = /^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
+						if (pattern.test(value)) {
+							// Hide error-email
+							_form.find('.notify--invalid-email').fadeOut();
 
-					if (pattern.test(value)) {
-						// Hide error-email
-						_form.find('.notify--invalid-email').fadeOut();
-					} else {
-						// Show error-email
-						_form.find('.notify--invalid-email').fadeIn();
+							// if pattern.test(value) => validate email to _validEmail
+							if (value !== _validEmail) {
+								valid = false;
+				
+								_form.find('.notify--invalid-email').hide();
+								_form.find('.notify--invalid-password-email').fadeIn();
+							}
+
+	
+						} else {
+							// Show error-email
+							_form.find('.notify--invalid-password-email').hide();
+							_form.find('.notify--invalid-email').fadeIn();
+							valid = false;
+						}
 					}
 
-					if (value !== _validEmail) {
-						valid = false;
-					} 
+					if (valid && type === 'password') {
 
-				}
-
-				if (input.attr('type').toLowerCase() === 'password') {
-					if (+value !== _password) {
-						valid = false;
+						// if pattern.test(value) && value === _validEmail  => validate password to _password
+						if (+value !== _password) {
+							valid = false;
+							_form.find('.notify--invalid-email').hide();
+							_form.find('.notify--invalid-password-email').fadeIn();
+						}
 					} 
-				}
-				 
+				}	 
+				//Hide errors
+				input.on('keydown', function () {
+					_form.find('.notify--enter-' + name).hide();		
+				});
+	 
 			});
-
 			checkLoginValid._isValid = valid;
 		}
 
 		var _sendForm = function() {
+			// if email end password is valid => checkLoginValid._isValid = true and form is submit
 			if (checkLoginValid._isValid) {
-				_form.unbind('submit').submit();
-			} else {
-				_form.find('.notify--invalid-password-email').fadeIn();
+			 _form.unbind('submit').submit();
 			} 
 		}
 
